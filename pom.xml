@@ -7,7 +7,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.antmedia.plugin</groupId>
-	<artifactId>PluginBaseApp</artifactId>
+	<artifactId>SamplePlugin</artifactId>
 	<packaging>jar</packaging>
 	<name>Plugin Maven Webapp</name>
 	<url>http://maven.apache.org</url>
