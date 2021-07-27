@@ -15,11 +15,12 @@ import io.antmedia.app.SampleFrameListener;
 import io.antmedia.app.SamplePacketListener;
 import io.antmedia.muxer.MuxAdaptor;
 import io.antmedia.plugin.api.IFrameListener;
+import io.antmedia.plugin.api.IStreamListener;
 import io.antmedia.settings.ServerSettings;
 import io.vertx.core.Vertx;
 
 @Component(value="plugin.myplugin")
-public class SamplePlugin implements ApplicationContextAware{
+public class SamplePlugin implements ApplicationContextAware, IStreamListener{
 
 	public static final String BEAN_NAME = "web.handler";
 	protected static Logger logger = LoggerFactory.getLogger(SamplePlugin.class);
@@ -29,11 +30,13 @@ public class SamplePlugin implements ApplicationContextAware{
 	private SamplePacketListener packetListener = new SamplePacketListener();
 	private ApplicationContext applicationContext;
 
-	
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
 		vertx = (Vertx) applicationContext.getBean("vertxCore");
+		
+		AntMediaApplicationAdapter app = getApplication();
+		app.addStreamListener(this);
 	}
 		
 	public MuxAdaptor getMuxAdaptor(String streamId) 
@@ -74,6 +77,20 @@ public class SamplePlugin implements ApplicationContextAware{
 
 	public String getStats() {
 		return frameListener.getStats() + "\t" + packetListener.getStats();
+	}
+
+	@Override
+	public void streamStarted(String streamId) {
+		System.out.println("***************");
+		System.out.println("Stream Started:"+streamId);
+		System.out.println("***************");
+	}
+
+	@Override
+	public void streamFinished(String streamId) {
+		System.out.println("***************");
+		System.out.println("Stream Finished:"+streamId);
+		System.out.println("***************");
 	}
 
 	
